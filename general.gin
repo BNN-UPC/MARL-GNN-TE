@@ -1,0 +1,15 @@
+import lib.run_experiment
+import environment.environment
+import gin.tf.external_configurables
+
+Runner.algorithm = 'PPO'
+Runner.reload_model = False
+Runner.model_dir = 'checkpoints/training/gravity_1/NSFNet+GEANT2/PPO_ecmp_agg_period100/clip0.25/gamma0.97/episode41'
+Runner.only_eval = False
+Runner.save_checkpoints = True
+
+Environment.env_type = 'NSFNet+GEANT2'
+Environment.traffic_profile = 'gravity_1'
+Environment.routing = 'sp'
+Environment.probs_to_states = False
+Environment.seed_init_weights = 1

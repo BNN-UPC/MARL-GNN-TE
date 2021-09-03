@@ -1,0 +1,44 @@
+import agents.ppo_agent
+import lib.actor
+import lib.critic
+import gin.tf.external_configurables
+
+PPOAgent.gamma = 0.95
+PPOAgent.clip_param = 0.2
+PPOAgent.batch_size = 25
+PPOAgent.select_max_action = False
+PPOAgent.epochs = 3
+PPOAgent.gae_lambda = 0.9 
+PPOAgent.horizon = None
+PPOAgent.eval_period = 50
+PPOAgent.change_traffic = True
+PPOAgent.change_traffic_period = 1
+PPOAgent.last_training_sample = 50
+PPOAgent.max_evals = 50
+PPOAgent.eval_env_type = ['GBN','NSFNet','GEANT2']
+PPOAgent.num_eval_samples = 10
+
+PPOAgent.critic_loss_factor=0.5
+PPOAgent.entropy_loss_factor=0.001
+PPOAgent.normalize_advantages=True
+PPOAgent.max_grad_norm=1.0
+PPOAgent.optimizer = @tf.keras.optimizers.Adam()
+tf.keras.optimizers.Adam.learning_rate=0.0003
+tf.keras.optimizers.Adam.beta_1=0.9
+tf.keras.optimizers.Adam.epsilon=0.1
+
+Actor.link_state_size = 16
+Actor.aggregation = 'min_max'
+Actor.first_hidden_layer_size = 128
+Actor.dropout_rate = 0.15
+Actor.final_hidden_layer_size = 64
+Actor.message_iterations = 8
+Actor.activation_fn = 'tanh'
+
+Critic.link_state_size = 16
+Critic.aggregation = 'min_max'
+Critic.first_hidden_layer_size = 128
+Critic.dropout_rate = 0.15
+Critic.final_hidden_layer_size = 64
+Critic.message_iterations = 8
+Critic.activation_fn = 'tanh'

@@ -1,6 +1,6 @@
 # MARL+GNN for Traffic Engineering Optimization
 #### Code of paper "Is Machine Learning Ready for Traffic Engineering Optimization?"
-#### To appear at IEEE ICNP 2021
+#### To appear as a Main Conference Paper at IEEE ICNP 2021
 #### Guillermo Bernárdez, José Suárez-Varela, Albert Lopez, Bo Wu, Shihan Xiao, Xiangle Cheng, Pere Barlet-Ros, Albert Cabellos-Aparicio.
 #### Links to paper: [[ArXiv]()]
 

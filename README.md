@@ -2,7 +2,8 @@
 #### Code of paper "Is Machine Learning Ready for Traffic Engineering Optimization?"
 #### To appear as a Main Conference Paper at IEEE ICNP 2021
 #### Guillermo Bernárdez, José Suárez-Varela, Albert Lopez, Bo Wu, Shihan Xiao, Xiangle Cheng, Pere Barlet-Ros, Albert Cabellos-Aparicio.
-#### Links to paper: [[ArXiv]()]
+#### Links to paper: [[ArXiv](https://arxiv.org/abs/2109.01445)]
+#### Download datasets [here](https://bnn.upc.edu/download/marl-gnn-te_datasets/)
 
 
 ## Abstract

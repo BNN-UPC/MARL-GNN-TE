@@ -2,7 +2,7 @@ from tensorflow import keras
 import tensorflow as tf
 import tensorflow_probability as tfp
 from environment.environment import Environment
-from lib.actor import  Actor, Actor_old
+from lib.actor import  Actor
 from lib.critic import Critic
 from utils.functions import linearly_decaying_epsilon
 from utils.defo_process_results import get_traffic_matrix
@@ -24,7 +24,6 @@ class PPOAgent(object):
 
     def __init__(self, 
                  env,
-                 old_actor=False,
                  eval_env_type=['GBN','NSFNet','GEANT2'],
                  num_eval_samples=10,
                  clip_param=0.2,
@@ -52,7 +51,6 @@ class PPOAgent(object):
                  save_checkpoints=True):
 
         self.env = env
-        self.old_actor = old_actor
         self.eval_env_type = eval_env_type
         self.num_eval_samples = num_eval_samples
         self.clip_param = clip_param
@@ -87,10 +85,7 @@ class PPOAgent(object):
         self.change_sample = False
 
     def _get_actor_critic_functions(self):
-        if self.old_actor:
-            self.actor = Actor_old(self.env.G, num_features=self.env.num_features)
-        else:
-            self.actor = Actor(self.env.G, num_features=self.env.num_features)
+        self.actor = Actor(self.env.G, num_features=self.env.num_features)
         self.actor.build()
         self.critic = Critic(self.env.G, num_features=self.env.num_features)
         self.critic.build()
@@ -457,49 +452,6 @@ class PPOAgent(object):
 
             self.experiment_identifier = os.path.join(mode, eval_env_folder, env_folder, agent_folder, function_folder, episode)
 
-        return self.experiment_identifier
-
-
-    def set_experiment_identifier_old(self, only_eval):
-        self.only_eval = only_eval
-        mode = 'eval' if only_eval else 'training'
-        network = '+'.join([str(elem) for elem in self.env.env_type])
-        if not (self.change_traffic and self.change_traffic_period == 1):
-            seed = 'variable' + str(self.change_traffic_period) if self.change_traffic else 'sample' + str(self.env.skip_n_samples)
-            network += '_'+seed
-        traffic_profile = self.env.traffic_profile
-        algorithm = 'PPO_' + self.env.routing
-        if self.env.probs_to_states: algorithm += '_probs'
-        if self.actor.aggregation == 'combination': algorithm += '_agg'
-        clip = 'clip'+str(self.clip_param)
-        gamma = 'gamma'+str(self.gamma)
-        period = 'period'+str(self.eval_period)
-        if self.eval_period > 50:#'+' in network:
-            algorithm += '_' + period
-
-        if self.reload_model:
-            model_dir = self.model_dir
-            r_traffic_profile = model_dir.split('/')[2]
-            r_network = model_dir.split('/')[3]
-            r_algorithm = model_dir.split('/')[4] 
-            r_clip = model_dir.split('/')[5]
-            r_gamma = model_dir.split('/')[6]
-            r_episode = model_dir.split('/')[7]
-            if only_eval:
-                if network != r_network: r_network = r_network + '_' + network
-                if self.select_max_action: r_network += '_selectMAX'
-                if traffic_profile != r_traffic_profile: r_traffic_profile = r_traffic_profile + '_' + traffic_profile
-                r_algorithm += '_' + self.env.routing
-                experiment_identifier = os.path.join(mode, r_traffic_profile, r_network, r_algorithm, r_clip, r_gamma, r_episode)
-                self.network = r_network
-                self.traffic_profile = r_traffic_profile
-                self.algorithm = r_algorithm
-            else:
-                model_reloaded = r_traffic_profile + '_' + r_network + '_' + r_algorithm + '_' + r_clip + '_' + r_gamma + '_' + r_episode
-                experiment_identifier = os.path.join('reload', model_reloaded, traffic_profile, network, algorithm, clip, gamma)
-        else:
-            experiment_identifier = os.path.join(mode, traffic_profile, network, algorithm, clip, gamma)
-        self.experiment_identifier = experiment_identifier
         return self.experiment_identifier
 
 

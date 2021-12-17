@@ -1,7 +1,6 @@
 
 from environment.environment import Environment
 from agents.ppo_agent import PPOAgent
-from agents.dqn_agent import DQNAgent
 
 import os
 import logging
@@ -29,8 +28,9 @@ class Runner(object):
                 self.agent = PPOAgent(env, old_actor=old_actor, save_checkpoints=save_checkpoints)
             else:
                 self.agent = PPOAgent(env, save_checkpoints=save_checkpoints)
-        elif algorithm == 'DQN':
-            self.agent = DQNAgent(env, save_checkpoints=save_checkpoints)
+        else:
+            #Insert  here your customized RL algorithm 
+            assert (False), 'RL Algorithm %s is not implemented' %algorithm
         
         self.base_dir= base_dir
         self.checkpoint_base_dir = checkpoint_base_dir

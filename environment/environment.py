@@ -1,7 +1,5 @@
 from utils.functions import pairwise_iteration
 
-from datanetAPI.datanetAPI import DatanetAPI
-
 import networkx as nx
 import numpy as np
 import copy
